@@ -97,15 +97,15 @@ def replace_with_thresholds(dataframe, variable, q1=0.25, q3=0.75):
 
 
 def cat_summary(dataframe, col_name, plot=False):
-    print(pd.DataFrame({col_name: dataframe[col_name].value_counts(),
+    print(pd.DataFrame({col_name: dataframe[col_name].value_counts(), # The value_counts() method is a useful tool for understanding the distribution of categorical variables.
                         "Ratio": 100 * dataframe[col_name].value_counts() / len(dataframe)}))
     print("##########################################")
 
     if plot:
         sns.countplot(x=dataframe[col_name], data=dataframe)
         plt.show(block=True)
-
-
+    # This means that your program will continue executing even if the plot window is still open(Block = True)
+ 
 def num_summary(dataframe, numerical_col, plot=False):
     quantiles = [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.99]
 

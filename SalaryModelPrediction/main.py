@@ -114,6 +114,12 @@ for col in num_cols:
 
 for col in cat_cols:
     cat_summary(df, col, plot=True)
+# Output example 
+#        League  Ratio
+#League               
+#A          175  54.35
+#N          147  45.65
+        
 
 #############################################
 # 3.Analysis of Numerical Variables
@@ -121,6 +127,11 @@ for col in cat_cols:
 
 for col in num_cols:
     num_summary(df, col, plot=True)
+        
+# count   322.00
+#mean    380.93
+#std     153.40
+#min      16.00
 
 #############################################
 # 4. Analysis of Target Variable
@@ -137,7 +148,7 @@ high_correlated_cols(df, plot=True)
 
 
 df.isnull().sum()
-df.dropna(inplace=True)
+df.dropna(inplace=True) # permanently remove missing values
 df.isnull().sum()
 
 #############################################
@@ -149,6 +160,10 @@ num_cols
 new_num_cols = [col for col in num_cols if col not in ["Salary", "Years"]]
 
 df[new_num_cols] = df[new_num_cols] + 1
+
+# can perform such transformations to enhance the meaning or suitability of certain numerical features during model training or data analysis.
+#In this code example, adding 1 to each value in the columns does not change the scale or distribution of the data, but it can potentially impact model performance or analysis results in some cases. 
+# These types of transformations can be used as part of the data exploration and modeling processes.
 
 
 df.columns = [col.upper() for col in df.columns]
@@ -211,6 +226,20 @@ cat_cols
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 # Label Encoding
+# Label encoding is the process of converting categorical (classification) variables into numerical values.
+#Such as , colors , sex etc.
+
+# Nominal Variables : Label Encoding:
+#- Men: 0
+#- Women: 1
+# Ordinal Variables : Label Encoding
+# Primary School : 1
+# Highschool : 2 
+# Bachelor :3 etc
+
+# Note that An important point to be mindful of when using label encoding is to ensure that the ranking in ordinal variables is genuinely meaningful and logical. 
+#Otherwise, an incorrect ranking can mislead your model. Therefore, it's essential to have a good understanding of the meaning of rankings and values.
+
 
 binary_cols = [col for col in df.columns if
                df[col].dtype not in [int, float] and df[col].nunique() == 2]
@@ -218,13 +247,33 @@ binary_cols = [col for col in df.columns if
 for col in binary_cols:
     df = label_encoder(df, col)
 
-# Rare Encoding
+# Rare Encoding 
+# Rare encoding aims to reduce the impact of rare classes by combining them or marking them with a special label.
 
 rare_analyser(df,"SALARY", cat_cols)
 df = rare_encoder(df, 0.01, cat_cols)
 
 
 # 6. One-Hot Encoding
+# One-Hot Encoding is a data transformation technique used to convert categorical (nominal) data into numerical values.
+# For each observation, the column corresponding to the category of that observation is marked with 1, while the other columns are filled with 0.
+#|--------|
+#| Red |
+#| Blue   |
+#| Green  |
+#| Black |
+
+#After encoding 
+
+#| Colour  |    | Red | Blue | Green |
+|---------|------|-------|
+|    1    |  0   |   0   |
+|    0    |  1   |   0   |
+|    0    |  0   |   1   |
+|    1    |  0   |   0   |
+
+
+
 
 ohe_cols = [col for col in df.columns if 10 >= df[col].nunique() > 2]
 df = one_hot_encoder(df, ohe_cols, drop_first=True)

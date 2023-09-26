@@ -281,10 +281,28 @@ cat_cols, num_cols, cat_but_car = grab_col_names(df)
 num_cols.remove("SALARY")
 
 # 7. Robust-Scaler
+
+#This code scales the numerical columns of a dataset using the RobustScaler class. RobustScaler discards the smallest and largest 25% of data when calculating the standard deviation. This prevents outliers from affecting the scaling process.
+
+#The code performs the following steps:
+
+#The num_cols variable is a list of the numerical columns.
+#The for loop creates a RobustScaler object for each numerical column.
+#The RobustScaler object uses the fit() method to calculate the mean and standard deviation of the column.
+#The RobustScaler object uses the transform() method to scale the data.
+#The df variable is updated with the scaled data.
+#For example, if the num_cols variable contains the following list:
+
 for col in num_cols:
     transformer = RobustScaler().fit(df[[col]])
     df[col] = transformer.transform(df[[col]])
-
+    
+#num_cols = ["age", "salary", "experience"]
+# age    salary   experience
+0    -0.718  0.493572
+1    -0.262  0.835062
+2    -0.556  0.163317
+...
 
 ######################################################
 # Multiple Linear Regression

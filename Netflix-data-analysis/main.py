@@ -20,3 +20,12 @@ data = df
 
 data = data.dropna()
 data.shape
+
+#EDA 
+for check_eda(dataframe) :
+print(15*#)
+      
+
+
+
+

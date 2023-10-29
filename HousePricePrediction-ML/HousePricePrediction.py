@@ -34,7 +34,7 @@ pd.set_option('display.width', None)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 # Veri setinin okutulması
-df = pd.read_csv("datasets/house_price_prediction.csv")
+df = pd.read_csv("houseprediction.csv")
 
 
 ######################################
@@ -80,14 +80,7 @@ check_df(df)
 ##################################
 
 def grab_col_names(dataframe, cat_th=10, car_th=20):
-    """
-    grab_col_names for given dataframe
-
-    :param dataframe:
-    :param cat_th:
-    :param car_th:
-    :return:
-    """
+ 
 
     cat_cols = [col for col in dataframe.columns if dataframe[col].dtypes == "O"]
 

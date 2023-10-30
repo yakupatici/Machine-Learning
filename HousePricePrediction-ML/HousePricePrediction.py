@@ -2,7 +2,7 @@
 #HOUSE PRICE PREDICTION
 #####################################################
 
-# Kütüphanelerin import edilmesi
+
 
 import numpy as np
 import pandas as pd
@@ -33,23 +33,23 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.width', None)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
-# Veri setinin okutulması
+
 df = pd.read_csv("houseprediction.csv")
 
 
 ######################################
-# GÖREV 1 : Veri setine EDA işlemlerini uygulayınız.
+# TASK 1 : Apply EDA (Exploratory Data Analysis) procedures to the dataset.
 ######################################
 
-# 1. Genel Resim
-# 2. Kategorik Değişken Analizi (Analysis of Categorical Variables)
-# 3. Sayısal Değişken Analizi (Analysis of Numerical Variables)
-# 4. Hedef Değişken Analizi (Analysis of Target Variable)
-# 5. Korelasyon Analizi (Analysis of Correlation)
+# 1. General Picture
+# 2. Analysis of Categorical Variables
+# 3. Analysis of Numerical Variables
+# 4. Analysis of Target Variable
+# 5. Analysis of Correlation
 
 
 ######################################
-# 1. Genel Resim
+# 1. General Picture
 ######################################
 
 def check_df(dataframe):
@@ -76,7 +76,7 @@ df = df.loc[df["SalePrice"]<=400000,]
 check_df(df)
 
 ##################################
-# NUMERİK VE KATEGORİK DEĞİŞKENLERİN YAKALANMASI
+# Capturing Numerical and Categorical Variables
 ##################################
 
 def grab_col_names(dataframe, cat_th=10, car_th=20):
@@ -103,10 +103,10 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
     print(f'cat_but_car: {len(cat_but_car)}')
     print(f'num_but_cat: {len(num_but_cat)}')
 
-    # cat_cols + num_cols + cat_but_car = değişken sayısı.
-    # num_but_cat cat_cols'un içerisinde zaten.
-    # dolayısıyla tüm şu 3 liste ile tüm değişkenler seçilmiş olacaktır: cat_cols + num_cols + cat_but_car
-    # num_but_cat sadece raporlama için verilmiştir.
+    # cat_cols + num_cols + cat_but_car = the number of variables.
+    # num_but_cat is already within cat_cols.
+    # Therefore, with these 3 lists, all variables will be selected: cat_cols + num_cols + cat_but_car
+    # num_but_cat is provided for reporting purposes only..
 
     return cat_cols, cat_but_car, num_cols, num_but_cat
 
@@ -114,7 +114,7 @@ cat_cols, cat_but_car, num_cols = grab_col_names(df)
 
 
 ######################################
-# 2. Kategorik Değişken Analizi (Analysis of Categorical Variables)
+# 2. Analysis of Categorical Variables
 ######################################
 
 def cat_summary(dataframe, col_name, plot=False):
@@ -132,7 +132,7 @@ for col in cat_cols:
 
 
 ######################################
-# 3. Sayısal Değişken Analizi (Analysis of Numerical Variables)
+# 3.Analysis of Numerical Variables
 ######################################
 
 def num_summary(dataframe, numerical_col, plot=False):
@@ -154,7 +154,7 @@ for col in num_cols:
 
 
 ######################################
-# 4. Hedef Değişken Analizi (Analysis of Target Variable)
+# 4. Analysis of Target Variable
 ######################################
 
 def target_summary_with_cat(dataframe, target, categorical_col):
@@ -169,20 +169,20 @@ for col in cat_cols:
 df["SalePrice"].hist(bins=100)
 plt.show()
 
-# Bağımlı değişkenin logaritmasının incelenmesi
+# Examination of the dependent variable
 np.log1p(df['SalePrice']).hist(bins=50)
 plt.show()
 
 ######################################
-# 5. Korelasyon Analizi (Analysis of Correlation)
+# 5. Analysis of Correlation
 ######################################
 
-corr = df[num_cols].corr()
-corr
+correlations = df[num_cols].corr()
+correllations
 
-# Korelasyonların gösterilmesi
+# Showing Correlations
 sns.set(rc={'figure.figsize': (12, 12)})
-sns.heatmap(corr, cmap="RdBu")
+sns.heatmap(corrrllations, cmap="RdBu")
 plt.show()
 
 
@@ -204,14 +204,14 @@ high_correlated_cols(df, plot=False)
 
 
 ######################################
-# GÖREV 2 : Veri ön işleme işlemlerini gerçekleştiriniz.
+# TASK 2 : Perform data preprocessing tasks.
 ######################################
 
 ######################################
-# Aykırı Değer Analizi
+# Analysis of Outliers
 ######################################
 
-# Aykırı değerlerin baskılanması
+# Suppression of Outliers
 def outlier_thresholds(dataframe, variable, low_quantile=0.10, up_quantile=0.90):
     quantile_one = dataframe[variable].quantile(low_quantile)
     quantile_three = dataframe[variable].quantile(up_quantile)
@@ -220,7 +220,7 @@ def outlier_thresholds(dataframe, variable, low_quantile=0.10, up_quantile=0.90)
     low_limit = quantile_one - 1.5 * interquantile_range
     return low_limit, up_limit
 
-# Aykırı değer kontrolü
+# Checking of the Outliers' value
 def check_outlier(dataframe, col_name):
     low_limit, up_limit = outlier_thresholds(dataframe, col_name)
     if dataframe[(dataframe[col_name] > up_limit) | (dataframe[col_name] < low_limit)].any(axis=None):
@@ -248,7 +248,7 @@ for col in num_cols:
 
 
 ######################################
-# Eksik Değer Analizi
+# Missing Value Analysis
 ######################################
 
 

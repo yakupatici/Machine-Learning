@@ -26,6 +26,7 @@ from sklearn.model_selection import train_test_split, cross_val_score,GridSearch
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter("ignore", category=ConvergenceWarning)
+warnings.simplefilter(action='ignore', category=warnings)
 
 
 pd.set_option('display.max_columns', None)
@@ -70,7 +71,7 @@ def check_df(dataframe):
 check_df(df)
 
 
-# Aykırı değerlerin veriden uzaklaştırılması
+# Removing outliers from the data
 df = df.loc[df["SalePrice"]<=400000,]
 
 check_df(df)
@@ -234,7 +235,7 @@ for col in num_cols:
       print(col, check_outlier(df, col))
 
 
-# Aykırı değerlerin baskılanması
+#Outlier suppression/reduction
 def replace_with_thresholds(dataframe, variable):
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
@@ -273,11 +274,11 @@ df["Alley"].value_counts()
 df["BsmtQual"].value_counts()
 
 
-# Bazı değişkenlerdeki boş değerler evin o özelliğe sahip olmadığını ifade etmektedir
+# Missing values in certain variables indicate that the property does not possess that particular feature
 no_cols = ["Alley","BsmtQual","BsmtCond","BsmtExposure","BsmtFinType1","BsmtFinType2","FireplaceQu",
            "GarageType","GarageFinish","GarageQual","GarageCond","PoolQC","Fence","MiscFeature"]
 
-# Kolonlardaki boşlukların "No" ifadesi ile doldurulması
+# Filling the empty spaces in the columns with the word 'No'.
 for col in no_cols:
     df[col].fillna("No",inplace=True)
 
@@ -285,17 +286,17 @@ missing_values_table(df)
 
 
 
-# Bu fonsksiyon eksik değerlerin median veya mean ile doldurulmasını sağlar
+# This function allows for filling missing values with the median or mean.
 
 def quick_missing_imp(data, num_method="median", cat_length=20, target="SalePrice"):
-    variables_with_na = [col for col in data.columns if data[col].isnull().sum() > 0]  # Eksik değere sahip olan değişkenler listelenir
+    variables_with_na = [col for col in data.columns if data[col].isnull().sum() > 0]  # The variables with missing values are listed
 
     temp_target = data[target]
 
     print("# BEFORE")
-    print(data[variables_with_na].isnull().sum(), "\n\n")  # Uygulama öncesi değişkenlerin eksik değerlerinin sayısı
+    print(data[variables_with_na].isnull().sum(), "\n\n")  # The number of missing values in pre-application variables
 
-    # değişken object ve sınıf sayısı cat_lengthe eşit veya altındaysa boş değerleri mode ile doldur
+    # If the variable is of type 'object' and the number of unique categories is equal to or less than cat_length, fill missing values with the mode.
     data = data.apply(lambda x: x.fillna(x.mode()[0]) if (x.dtype == "O" and len(x.unique()) <= cat_length) else x, axis=0)
 
     # num_method mean ise tipi object olmayan değişkenlerin boş değerleri ortalama ile dolduruluyor
@@ -552,7 +553,7 @@ df['SalePrice'].std()
 
 
 ##################
-# GÖREV 6 : Görev 5'deki sonuçlara dayanarak hiperparametre optimizasyonlarını gerçekleştiriniz.
+# Task 6: Perform hyperparameter optimizations based on the results from Task 5
 ##################
 
 
@@ -581,7 +582,7 @@ rmse = np.mean(np.sqrt(-cross_val_score(final_model, X, y, cv=5, scoring="neg_me
 
 
 ##################
-# GÖREV 7 : Modelin test ediniz ve 22222'nin altına düşmeye çalışınız.
+# Task 7: Test the model and attempt to reduce it to below 22,222.
 ##################
 lgbm_tuned = LGBMRegressor(**lgbm_gs_best.best_params_).fit(X_train, y_train)
 y_pred = lgbm_tuned.predict(X_test)

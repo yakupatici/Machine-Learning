@@ -405,7 +405,7 @@ rare_encoder(df,0.01)
 
 
 ######################################
-# GÖREV 3 : Yeni değişkenler oluşturunuz ve oluşturduğunuz yeni değişkenlerin başına 'NEW' ekleyiniz.
+# TASK 3: Create new variables and add 'NEW' to the beginning of the new variables you create.
 ######################################
 
 df["NEW_1st*GrLiv"] = (df["1stFlrSF"]*df["GrLivArea"])
@@ -484,13 +484,13 @@ df["NEW_GarageSold"] = df.YrSold - df.GarageYrBlt
 
 drop_list = ["Street", "Alley", "LandContour", "Utilities", "LandSlope","Heating", "PoolQC", "MiscFeature","Neighborhood"]
 
-# drop_list'teki değişkenlerin düşürülmesi
+# dropping variables in drop_list
 df.drop(drop_list, axis=1, inplace=True)
 
 
 
 ##################
-# GÖREV 4 : Label Encoding & One-Hot Encoding işlemlerinin uygulanması
+#TASK 4: Implementation of Label Encoding vs One-Hot Encoding operations
 ##################
 
 cat_cols, cat_but_car, num_cols, num_but_cat = grab_col_names(df)
@@ -515,18 +515,17 @@ df = one_hot_encoder(df, cat_cols, drop_first=True)
 
 
 ##################################
-# MODELLEME
+# MODELLING
 ##################################
 
 ##################################
-# GÖREV 5: Modeli kurma işlemini gerçekleştiriniz.
-##################################
 
-# Log dönüşümünün gerçekleştirilmesi
+##################################
+# Performing log conversion
 y = np.log1p(df['SalePrice'])
 X = df.drop(["Id", "SalePrice"], axis=1)
 
-# Verinin eğitim ve tet verisi olarak bölünmesi
+# Dividing the data into training and test data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=17)
 
 models = [('LR', LinearRegression()),
